@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage)  { 
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("ExtFlightDelays.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
