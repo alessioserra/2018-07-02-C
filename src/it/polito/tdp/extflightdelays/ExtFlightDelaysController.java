@@ -5,9 +5,12 @@
 package it.polito.tdp.extflightdelays;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.extflightdelays.model.Airport;
 import it.polito.tdp.extflightdelays.model.Model;
+import it.polito.tdp.extflightdelays.model.Ordinabili;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,13 +38,13 @@ public class ExtFlightDelaysController {
     private Button btnAnalizza; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbBoxAeroportoPartenza"
-    private ComboBox<?> cmbBoxAeroportoPartenza; // Value injected by FXMLLoader
+    private ComboBox<Airport> cmbBoxAeroportoPartenza; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnAeroportiConnessi"
     private Button btnAeroportiConnessi; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbBoxAeroportoDestinazione"
-    private ComboBox<?> cmbBoxAeroportoDestinazione; // Value injected by FXMLLoader
+    private ComboBox<Airport> cmbBoxAeroportoDestinazione; // Value injected by FXMLLoader
 
     @FXML // fx:id="numeroTratteTxtInput"
     private TextField numeroTratteTxtInput; // Value injected by FXMLLoader
@@ -52,11 +55,32 @@ public class ExtFlightDelaysController {
     @FXML
     void doAnalizzaAeroporti(ActionEvent event) {
 
+    	try {
+    	int x = Integer.parseInt(compagnieMinimo.getText());
+    	
+    	model.creaGrafo(x);
+    	cmbBoxAeroportoPartenza.getItems().addAll(model.getAirports());
+    	
+    	}catch(NumberFormatException npe) {
+    		txtResult.appendText("Inserire un valore corretto!");
+    	}
+    	
     }
 
     @FXML
     void doCalcolaAeroportiConnessi(ActionEvent event) {
 
+    	try {
+    		
+    	Airport a = cmbBoxAeroportoPartenza.getValue();
+    	List<Ordinabili> adiacenti = model.getAdiacenti(a);
+    	
+    	for (Ordinabili o : adiacenti) txtResult.appendText(o.getAirport()+" - "+o.getWeight()+"\n");
+    	
+    	}
+    	catch(NullPointerException e) {
+    		txtResult.appendText("Selezionare un aereoporto valido");
+    	}
     }
 
     @FXML
